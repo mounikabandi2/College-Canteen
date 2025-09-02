@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Dashboard - College Canteen</title>
+    <link rel="stylesheet" href="../../css/design-system.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        
+        .sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: var(--space-6);
+            width: 280px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-8);
+            padding-bottom: var(--space-6);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--primary);
+        }
+        
+        .sidebar-title {
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        
+        .nav-item {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            font-weight: 500;
+        }
+        
+        .nav-link:hover,
+        .nav-item.active .nav-link {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--text);
+            transform: translateX(4px);
+        }
+        
+        .nav-icon {
+            font-size: var(--text-lg);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            padding: var(--space-6);
+            height: 100vh;
+            overflow-y: auto;
+            width: 100%;
+        }
+        
+        .dashboard-header {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            margin-bottom: var(--space-8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-family: var(--font-display);
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--text);
+            margin: 0;
+        }
+        
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-8);
+        }
+        
+        .profile-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: var(--radius-full);
+            border: 4px solid var(--primary);
+            margin: 0 auto var(--space-4);
+            display: block;
+            object-fit: cover;
+        }
+        
+        .profile-name {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: var(--space-2);
+        }
+        
+        .profile-role {
+            color: var(--text-muted);
+            font-size: var(--text-base);
+            margin-bottom: var(--space-4);
+        }
+        
+        .profile-status {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: var(--text);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 600;
+        }
+        
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+        }
+        
+        .settings-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .card-title {
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: var(--space-6);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+        }
+        
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4);
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-fast);
+        }
+        
+        .setting-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .setting-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+        
+        .setting-title {
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .setting-desc {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: var(--border);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+        
+        .toggle-switch.active {
+            background: var(--primary);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--text);
+            border-radius: var(--radius-full);
+            transition: transform var(--transition-fast);
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(26px);
+        }
+        
+        .stats-overview {
+            grid-column: 1 / -1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
+            margin-top: var(--space-8);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-6);
+            margin-top: var(--space-6);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--space-4);
+            background: var(--surface-light);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border);
+        }
+        
+        .stat-number {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: var(--text-sm);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=80&h=80&fit=crop&crop=center" alt="College Canteen Logo" class="sidebar-logo">
+                <span class="sidebar-title">Partner Dashboard</span>
+            </div>
+            
+            <nav>
+                <ul class="sidebar-nav">
+                    <li class="nav-item">
+                        <a href="orders.html" class="nav-link">
+                            <i class="fas fa-fire nav-icon"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="menu.html" class="nav-link">
+                            <i class="fas fa-utensils nav-icon"></i>
+                            <span>Menu</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="profile.html" class="nav-link">
+                            <i class="fas fa-store nav-icon"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../main/home.html" class="nav-link">
+                            <i class="fas fa-home nav-icon"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1 class="header-title">Restaurant Profile</h1>
+                <div class="user-profile">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=center" alt="User Avatar" class="user-avatar" style="width: 40px; height: 40px; border-radius: var(--radius-full); border: 2px solid var(--primary);">
+                    <button class="btn btn-ghost" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="profile-layout">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=200&h=200&fit=crop&crop=center" alt="Restaurant" class="profile-avatar">
+                        <h2 class="profile-name">Central Gallery Canteen</h2>
+                        <p class="profile-role">Premium Partner Restaurant</p>
+                        <span class="profile-status">
+                            <i class="fas fa-check-circle"></i> Verified Partner
+                        </span>
+                    </div>
+                    
+                    <form class="profile-form" id="profileForm">
+                        <div class="form-group">
+                            <label class="form-label">Restaurant Name</label>
+                            <input type="text" class="form-input" value="Central Gallery Canteen" id="restaurantName">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Contact Person</label>
+                                <input type="text" class="form-input" value="Rajesh Kumar" id="contactPerson">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-input" value="+91 98765 43210" id="phoneNumber">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" value="gallery.canteen@college.edu" id="emailAddress">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <textarea class="form-input" rows="3" id="address">Main Campus, Ground Floor, Gallery Block, College University</textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Opening Time</label>
+                                <input type="time" class="form-input" value="07:00" id="openingTime">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Closing Time</label>
+                                <input type="time" class="form-input" value="21:00" id="closingTime">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="settings-card">
+                    <h3 class="card-title">
+                        <div class="card-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        Restaurant Settings
+                    </h3>
+                    
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Online Status</div>
+                                <div class="setting-desc">Accept new orders</div>
+                            </div>
+                            <div class="toggle-switch active" onclick="toggleSetting(this)"></div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Auto Accept Orders</div>
+                                <div class="setting-desc">Automatically accept incoming orders</div>
+                            </div>
+                            <div class="toggle-switch" onclick="toggleSetting(this)"></div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">SMS Notifications</div>
+                                <div class="setting-desc">Receive order notifications via SMS</div>
+                            </div>
+                            <div class="toggle-switch active" onclick="toggleSetting(this)"></div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Email Reports</div>
+                                <div class="setting-desc">Daily sales and order reports</div>
+                            </div>
+                            <div class="toggle-switch active" onclick="toggleSetting(this)"></div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Promotional Offers</div>
+                                <div class="setting-desc">Show special offers to customers</div>
+                            </div>
+                            <div class="toggle-switch" onclick="toggleSetting(this)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-overview">
+                <h3 class="card-title">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    Performance Overview
+                </h3>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">4.6</div>
+                        <div class="stat-label">Average Rating</div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-number">324</div>
+                        <div class="stat-label">Total Reviews</div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-number">1,247</div>
+                        <div class="stat-label">Orders Completed</div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-number">₹1,24,500</div>
+                        <div class="stat-label">Total Revenue</div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-number">18 mins</div>
+                        <div class="stat-label">Avg Prep Time</div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-number">96%</div>
+                        <div class="stat-label">Order Accuracy</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Authentication check
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || !currentUser.isLoggedIn) {
+                window.location.href = '../auth/login.html';
+                return;
+            }
+            
+            // Profile form submission
+            document.getElementById('profileForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = {
+                    restaurantName: document.getElementById('restaurantName').value,
+                    contactPerson: document.getElementById('contactPerson').value,
+                    phoneNumber: document.getElementById('phoneNumber').value,
+                    emailAddress: document.getElementById('emailAddress').value,
+                    address: document.getElementById('address').value,
+                    openingTime: document.getElementById('openingTime').value,
+                    closingTime: document.getElementById('closingTime').value
+                };
+                
+                // Save to localStorage (in real app, this would be sent to server)
+                localStorage.setItem('restaurantProfile', JSON.stringify(formData));
+                
+                showToast('Profile updated successfully!', 'success');
+            });
+            
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                window.location.href = '../auth/login.html';
+            });
+            
+            // Load saved profile data
+            const savedProfile = JSON.parse(localStorage.getItem('restaurantProfile'));
+            if (savedProfile) {
+                Object.keys(savedProfile).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = savedProfile[key];
+                    }
+                });
+            }
+        });
+        
+        // Toggle setting function
+        function toggleSetting(element) {
+            element.classList.toggle('active');
+            
+            const settingTitle = element.parentElement.querySelector('.setting-title').textContent;
+            const isActive = element.classList.contains('active');
+            
+            showToast(`${settingTitle} ${isActive ? 'enabled' : 'disabled'}`, 'success');
+        }
+        
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type} show`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

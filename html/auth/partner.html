@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Registration - College Canteen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/design-system.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <!-- Left Panel -->
+        <div class="auth-left">
+            <div class="auth-brand">
+                <img src="../../images/logo.jpg" alt="College Canteen" class="brand-logo">
+                <h1>Partner with Us</h1>
+                <p>Join our network of campus food partners and grow your business</p>
+            </div>
+            
+            <div class="auth-features">
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <h3>Boost Revenue</h3>
+                        <p>Increase sales with our digital platform</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <h3>Reach Students</h3>
+                        <p>Connect with thousands of hungry students</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <div>
+                        <h3>Easy Management</h3>
+                        <p>Manage orders and menu through our dashboard</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="auth-right">
+            <div class="auth-form-container">
+                <div class="auth-header">
+                    <h2>Create Partner Account</h2>
+                    <p>Fill in your restaurant details to get started</p>
+                </div>
+
+                <form class="auth-form" id="partnerForm">
+                    <!-- Business Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">Business Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="businessName">Restaurant/Canteen Name</label>
+                            <input type="text" id="businessName" name="businessName" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="businessType">Business Type</label>
+                                <select id="businessType" name="businessType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="canteen">College Canteen</option>
+                                    <option value="restaurant">Restaurant</option>
+                                    <option value="cafe">Cafe</option>
+                                    <option value="food-truck">Food Truck</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cuisine">Cuisine Type</label>
+                                <select id="cuisine" name="cuisine" required>
+                                    <option value="">Select Cuisine</option>
+                                    <option value="indian">Indian</option>
+                                    <option value="chinese">Chinese</option>
+                                    <option value="continental">Continental</option>
+                                    <option value="fast-food">Fast Food</option>
+                                    <option value="beverages">Beverages</option>
+                                    <option value="mixed">Mixed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Business Description</label>
+                            <textarea id="description" name="description" rows="3" placeholder="Brief description of your business..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">Contact Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ownerName">Owner Name</label>
+                                <input type="text" id="ownerName" name="ownerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Business Address</label>
+                            <textarea id="address" name="address" rows="2" required placeholder="Complete business address..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Account Setup -->
+                    <div class="form-section">
+                        <h3 class="section-title">Account Setup</h3>
+                        
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <div class="password-input">
+                                    <input type="password" id="password" name="password" required>
+                                    <button type="button" class="password-toggle" onclick="togglePassword('password', this)" aria-label="Toggle password visibility"><i class="fas fa-eye-slash"></i></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <div class="password-input">
+                                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword', this)" aria-label="Toggle password visibility"><i class="fas fa-eye-slash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Submit -->
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#" class="link">Terms of Service</a> and <a href="#" class="link">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-handshake"></i>
+                        Create Partner Account
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html" class="link">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(fieldId, toggleButton) {
+            const field = document.getElementById(fieldId);
+            const icon = toggleButton.querySelector('i');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            } else {
+                field.type = 'password';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        }
+
+        document.getElementById('partnerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
+            
+            // Simulate registration process
+            const submitBtn = document.querySelector('.btn-primary');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Partner registration successful! Please wait for approval.');
+                window.location.href = 'login.html';
+            }, 2000);
+        });
+
+        // Form validation
+        document.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
+            field.addEventListener('blur', function() {
+                if (!this.value.trim()) {
+                    this.classList.add('error');
+                } else {
+                    this.classList.remove('error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

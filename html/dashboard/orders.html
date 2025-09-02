@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Dashboard - College Canteen</title>
+    <link rel="stylesheet" href="../../css/design-system.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        
+        .sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: var(--space-6);
+            width: 280px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-8);
+            padding-bottom: var(--space-6);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--primary);
+        }
+        
+        .sidebar-title {
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        
+        .nav-item {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            font-weight: 500;
+        }
+        
+        .nav-link:hover,
+        .nav-item.active .nav-link {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--text);
+            transform: translateX(4px);
+        }
+        
+        .nav-icon {
+            font-size: var(--text-lg);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            padding: var(--space-6);
+            height: 100vh;
+            overflow-y: auto;
+            width: 100%;
+        }
+        
+        .dashboard-header {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            margin-bottom: var(--space-8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-family: var(--font-display);
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--text);
+            margin: 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            text-align: center;
+            transition: all var(--transition-normal);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-4);
+            font-size: var(--text-2xl);
+            color: var(--text);
+        }
+        
+        .stat-card:nth-child(1) .stat-icon {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+        
+        .stat-card:nth-child(2) .stat-icon {
+            background: linear-gradient(135deg, var(--success), #059669);
+        }
+        
+        .stat-card:nth-child(3) .stat-icon {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        }
+        
+        .stat-card:nth-child(4) .stat-icon {
+            background: linear-gradient(135deg, var(--secondary), #0891b2);
+        }
+        
+        .stat-number {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: var(--space-2);
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: var(--text-sm);
+        }
+        
+        .orders-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+        }
+        
+        .section-title {
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--text);
+            margin: 0;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: var(--space-2);
+        }
+        
+        .filter-tab {
+            padding: var(--space-2) var(--space-4);
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-size: var(--text-sm);
+            transition: all var(--transition-fast);
+        }
+        
+        .filter-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--text);
+        }
+        
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+        
+        .order-card {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            transition: all var(--transition-normal);
+        }
+        
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .order-status {
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent);
+        }
+        
+        .status-confirmed {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--info);
+        }
+        
+        .status-delivered {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .order-details {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: var(--space-4);
+            align-items: center;
+        }
+        
+        .order-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        
+        .customer-name {
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .order-items {
+            color: var(--text-muted);
+            font-size: var(--text-sm);
+        }
+        
+        .order-time {
+            color: var(--text-muted);
+            font-size: var(--text-xs);
+        }
+        
+        .order-total {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .order-actions {
+            display: flex;
+            gap: var(--space-2);
+            margin-top: var(--space-4);
+        }
+        
+        .btn-sm {
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--text-xs);
+            border-radius: var(--radius-md);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=80&h=80&fit=crop&crop=center" alt="College Canteen Logo" class="sidebar-logo">
+                <span class="sidebar-title">Partner Dashboard</span>
+            </div>
+            
+            <nav>
+                <ul class="sidebar-nav">
+                    <li class="nav-item active">
+                        <a href="orders.html" class="nav-link">
+                            <i class="fas fa-fire nav-icon"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="menu.html" class="nav-link">
+                            <i class="fas fa-utensils nav-icon"></i>
+                            <span>Menu</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="profile.html" class="nav-link">
+                            <i class="fas fa-store nav-icon"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../main/home.html" class="nav-link">
+                            <i class="fas fa-home nav-icon"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1 class="header-title">Orders Dashboard</h1>
+                <div class="user-profile">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=center" alt="User Avatar" class="user-avatar" style="width: 40px; height: 40px; border-radius: var(--radius-full); border: 2px solid var(--primary);">
+                    <button class="btn btn-ghost" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-number" id="totalOrders">24</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-number" id="completedOrders">18</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number" id="pendingOrders">4</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="stat-number" id="totalRevenue">₹4,250</div>
+                    <div class="stat-label">Today's Revenue</div>
+                </div>
+            </div>
+            
+            <section class="orders-section">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Orders</h2>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-status="all">All</button>
+                        <button class="filter-tab" data-status="pending">Pending</button>
+                        <button class="filter-tab" data-status="confirmed">Confirmed</button>
+                        <button class="filter-tab" data-status="delivered">Delivered</button>
+                    </div>
+                </div>
+                
+                <div class="orders-list" id="ordersList">
+                    <!-- Orders will be populated by JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Authentication check
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || !currentUser.isLoggedIn) {
+                window.location.href = '../auth/login.html';
+                return;
+            }
+            
+            // Sample orders data
+            const orders = [
+                {
+                    id: 'ORD001',
+                    customer: 'Rahul Sharma',
+                    items: ['Chicken Burger', 'French Fries', 'Pepsi'],
+                    total: 280,
+                    status: 'pending',
+                    time: '2 mins ago'
+                },
+                {
+                    id: 'ORD002',
+                    customer: 'Priya Patel',
+                    items: ['Margherita Pizza', 'Garlic Bread'],
+                    total: 300,
+                    status: 'confirmed',
+                    time: '5 mins ago'
+                },
+                {
+                    id: 'ORD003',
+                    customer: 'Amit Kumar',
+                    items: ['Buffalo Wings', 'Onion Rings', 'Coke'],
+                    total: 320,
+                    status: 'delivered',
+                    time: '15 mins ago'
+                },
+                {
+                    id: 'ORD004',
+                    customer: 'Sneha Reddy',
+                    items: ['Veggie Burger', 'Milkshake'],
+                    total: 250,
+                    status: 'delivered',
+                    time: '25 mins ago'
+                },
+                {
+                    id: 'ORD005',
+                    customer: 'Vikash Singh',
+                    items: ['Hot Dog', 'Fries', 'Orange Juice'],
+                    total: 220,
+                    status: 'confirmed',
+                    time: '30 mins ago'
+                }
+            ];
+            
+            function renderOrders(filteredOrders = orders) {
+                const ordersList = document.getElementById('ordersList');
+                
+                if (filteredOrders.length === 0) {
+                    ordersList.innerHTML = `
+                        <div style="text-align: center; padding: var(--space-8); color: var(--text-muted);">
+                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: var(--space-4);"></i>
+                            <p>No orders found</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                ordersList.innerHTML = filteredOrders.map(order => `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span class="order-id">${order.id}</span>
+                            <span class="order-status status-${order.status}">${order.status.toUpperCase()}</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-info">
+                                <div class="customer-name">${order.customer}</div>
+                                <div class="order-items">${order.items.join(', ')}</div>
+                                <div class="order-time">${order.time}</div>
+                            </div>
+                            <div class="order-total">₹${order.total}</div>
+                        </div>
+                        <div class="order-actions">
+                            ${order.status === 'pending' ? `
+                                <button class="btn btn-primary btn-sm" onclick="updateOrderStatus('${order.id}', 'confirmed')">
+                                    <i class="fas fa-check"></i> Accept
+                                </button>
+                                <button class="btn btn-ghost btn-sm" onclick="updateOrderStatus('${order.id}', 'cancelled')">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            ` : ''}
+                            ${order.status === 'confirmed' ? `
+                                <button class="btn btn-primary btn-sm" onclick="updateOrderStatus('${order.id}', 'delivered')">
+                                    <i class="fas fa-truck"></i> Mark Delivered
+                                </button>
+                            ` : ''}
+                            <button class="btn btn-secondary btn-sm" onclick="viewOrderDetails('${order.id}')">
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Filter functionality
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active tab
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    const status = tab.getAttribute('data-status');
+                    const filteredOrders = status === 'all' ? orders : orders.filter(order => order.status === status);
+                    renderOrders(filteredOrders);
+                });
+            });
+            
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                window.location.href = '../auth/login.html';
+            });
+            
+            // Global functions
+            window.updateOrderStatus = (orderId, newStatus) => {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    order.status = newStatus;
+                    renderOrders();
+                    showToast(`Order ${orderId} ${newStatus}!`, 'success');
+                }
+            };
+            
+            window.viewOrderDetails = (orderId) => {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    alert(`Order Details:\\n\\nID: ${order.id}\\nCustomer: ${order.customer}\\nItems: ${order.items.join(', ')}\\nTotal: ₹${order.total}\\nStatus: ${order.status}`);
+                }
+            };
+            
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type} show`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+            
+            // Initial render
+            renderOrders();
+        });
+    </script>
+</body>
+</html>

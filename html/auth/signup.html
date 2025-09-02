@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - College Canteen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/design-system.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <!-- Left Panel -->
+        <div class="auth-left">
+            <div class="auth-brand">
+                <img src="../../images/logo.jpg" alt="College Canteen" class="brand-logo">
+                <h1>Join Our Community</h1>
+                <p>Start your journey with the future of campus dining</p>
+            </div>
+            
+            <div class="auth-features">
+                <div class="feature-item">
+                    <i class="fas fa-utensils"></i>
+                    <div>
+                        <h3>Diverse Menu</h3>
+                        <p>Access to 20+ canteens across campus</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h3>Save Time</h3>
+                        <p>Skip the queues with pre-ordering</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-star"></i>
+                    <div>
+                        <h3>Rewards</h3>
+                        <p>Earn points with every order</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="auth-right">
+            <div class="auth-form-container">
+                <div class="auth-header">
+                    <h2>Create Account</h2>
+                    <p>Join thousands of students already using our platform</p>
+                </div>
+
+                <div class="social-login">
+                    <div class="social-buttons">
+                        <a href="#" class="social-btn">
+                            <img src="../../images/google-icon.png" alt="Google">
+                            Google
+                        </a>
+                        <a href="#" class="social-btn">
+                            <img src="../../images/apple-icon.png" alt="Apple">
+                            Apple
+                        </a>
+                    </div>
+                    
+                    <div class="divider">
+                        <span>or create with email</span>
+                    </div>
+                </div>
+
+                <form class="auth-form" id="signupForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Enter last name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password" placeholder="Create a password" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                <img src="../../images/eye-off.png" alt="Toggle" id="passwordToggle">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="password-input">
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                <img src="../../images/eye-off.png" alt="Toggle" id="confirmPasswordToggle">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#" class="link">Terms of Service</a> and <a href="#" class="link">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html" class="link">Sign In</a></p>
+                    <p>Want to partner with us? <a href="partner.html" class="link">Become a Partner</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const toggle = document.getElementById(fieldId + 'Toggle');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                toggle.src = '../../images/eye-off.png';
+            } else {
+                field.type = 'password';
+                toggle.src = '../../images/eye-off.png';
+            }
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                const userData = {
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    isLoggedIn: true
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Account Created!';
+                submitBtn.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    window.location.href = '../main/home.html';
+                }, 1000);
+            }, 2000);
+        });
+
+        // Form validation
+        document.querySelectorAll('input[required]').forEach(field => {
+            field.addEventListener('blur', function() {
+                if (!this.value.trim()) {
+                    this.classList.add('error');
+                } else {
+                    this.classList.remove('error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
